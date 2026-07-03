@@ -1,0 +1,1097 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>De l'idée au site web · Le manuel · Amal Boukhdhir</title>
+  <meta name="description" content="Guide pratique pour créer un site web professionnel sur son propre domaine, sans outil complexe ni automatisation inutile. Claude Code + Ollama/Kimi gratuits en local, ou ~20 $/mois sur le cloud. GitHub, Vercel et Cloudflare.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    /* ---------- FONTS ---------- */
+    @font-face {
+      font-family: 'Bebas Neue';
+      src: url('https://cdn.jsdelivr.net/fontsource/fonts/bebas-neue@latest/latin-400-normal.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Nunito';
+      src: url('https://cdn.jsdelivr.net/fontsource/fonts/nunito@latest/latin-400-normal.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Nunito';
+      src: url('https://cdn.jsdelivr.net/fontsource/fonts/nunito@latest/latin-700-normal.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Nunito';
+      src: url('https://cdn.jsdelivr.net/fontsource/fonts/nunito@latest/latin-400-italic.woff2') format('woff2');
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    /* ---------- TOKENS ---------- */
+    :root{
+      --orange: #F26419;
+      --cream: #FAFAFA;
+      --highlight: #FFE8A8;
+      --black: #1A1A1A;
+      --gray-dark: #555555;
+      --gray-mid: #888888;
+      --border: #D5D2CC;
+      --card-bg: #FFFFFF;
+      --radius: 18px;
+      --radius-sm: 12px;
+      --bebas: 'Bebas Neue', Impact, sans-serif;
+      --nunito: 'Nunito', 'Helvetica Neue', sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--nunito);
+      color:var(--black);
+      background:var(--cream);
+      line-height:1.6;
+      font-size:16px;
+    }
+
+    a{color:var(--orange); text-decoration:none; font-weight:700}
+    a:hover{text-decoration:underline}
+
+    img{max-width:100%; height:auto; display:block; border-radius:var(--radius-sm)}
+
+    h1,h2,h3,h4,.eyebrow,.display{
+      font-family:var(--bebas);
+      font-weight:400;
+      letter-spacing:1px;
+      margin:0;
+      color:var(--black);
+    }
+
+    .hl{background:var(--highlight); padding:0 4px; border-radius:3px}
+    .accent{color:var(--orange)}
+
+    .container{width:min(1080px, calc(100% - 32px)); margin:0 auto}
+
+    /* ---------- NAV ---------- */
+    .nav{
+      position:sticky; top:0; z-index:20;
+      background:rgba(250,250,250,.96);
+      border-bottom:1px solid var(--border);
+      backdrop-filter:blur(8px);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:12px 0;
+    }
+    .nav-title{font-family:var(--bebas); font-size:18px; letter-spacing:2px; color:var(--black); white-space:nowrap}
+    .nav-links{display:flex; gap:10px; overflow:auto; padding-bottom:3px}
+    .nav-links a{
+      white-space:nowrap; text-decoration:none; color:var(--black); font-weight:700; font-size:13px;
+      padding:8px 12px; border-radius:999px; background:var(--cream); border:1px solid var(--border);
+      font-family:var(--nunito);
+    }
+    .nav-links a:hover{background:var(--highlight); text-decoration:none}
+
+    /* ---------- TOP PROGRESS ---------- */
+    .top-progress{
+      position:sticky; top:57px; z-index:19;
+      background:var(--card-bg);
+      border-bottom:1px solid var(--border);
+      padding:10px 0;
+    }
+    .top-progress .container{display:flex; align-items:center; gap:14px}
+    .top-progress-bar{flex:1; height:10px; background:var(--border); border-radius:999px; overflow:hidden; max-width:600px}
+    .top-progress-fill{height:100%; background:var(--orange); width:0%; transition:width .3s ease}
+    .top-progress-text{font-size:13px; font-weight:800; white-space:nowrap; color:var(--black); font-family:var(--nunito)}
+
+    /* ---------- HERO ---------- */
+    .hero{
+      min-height:78vh;
+      display:flex; align-items:center;
+      padding:60px 0 50px;
+      position:relative;
+      border-bottom:1px solid var(--border);
+    }
+    .hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center}
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 16px; border-radius:999px;
+      background:var(--card-bg); border:1px solid var(--border);
+      color:var(--orange); font-weight:800; font-size:13px;
+      margin-bottom:24px; font-family:var(--nunito);
+    }
+    .badge span{width:8px;height:8px;border-radius:50%;background:var(--orange)}
+    h1{font-size:clamp(44px, 6vw, 84px); line-height:.98; letter-spacing:2px; max-width:900px}
+    .hero p.lead{
+      font-size:clamp(18px, 2vw, 22px);
+      color:var(--gray-dark);
+      max-width:720px;
+      margin:22px 0 28px;
+      font-family:var(--nunito);
+    }
+    .cta-row{display:flex; flex-wrap:wrap; gap:14px; align-items:center}
+    .btn{
+      display:inline-flex; justify-content:center; align-items:center; gap:10px;
+      padding:15px 22px; border-radius:var(--radius-sm);
+      text-decoration:none; font-weight:800; font-size:15px;
+      border:1px solid transparent; cursor:pointer;
+      transition:transform .15s ease;
+    }
+    .btn:hover{transform:translateY(-2px); text-decoration:none}
+    .btn-primary{background:var(--orange); color:#fff}
+    .btn-secondary{background:var(--card-bg); color:var(--black); border-color:var(--border)}
+
+    .hero-card{
+      background:var(--card-bg);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:28px;
+    }
+    .hero-card h3{font-size:26px; margin-bottom:18px; letter-spacing:1px}
+    .mini-flow{display:grid; gap:12px}
+    .mini-step{
+      display:flex; gap:14px; align-items:flex-start;
+      padding:14px; border-radius:var(--radius-sm);
+      background:var(--cream); border:1px solid var(--border);
+    }
+    .mini-step .n{
+      flex:none; width:32px;height:32px; border-radius:50%;
+      background:var(--orange); color:#fff; display:grid; place-items:center;
+      font-weight:900; font-size:14px; font-family:var(--nunito);
+    }
+    .mini-step b{display:block; color:var(--black); line-height:1.2; font-weight:800}
+    .mini-step small{display:block; color:var(--gray-mid); margin-top:3px; font-size:13px}
+
+    /* ---------- SECTIONS ---------- */
+    section{padding:64px 0; border-bottom:1px solid var(--border)}
+    .section-head{max-width:820px; margin:0 auto 36px; text-align:center}
+    .eyebrow{
+      color:var(--orange); font-weight:800; text-transform:uppercase; letter-spacing:.18em;
+      font-size:12px; margin-bottom:10px; font-family:var(--bebas);
+    }
+    h2{font-size:clamp(34px, 4.5vw, 56px); line-height:1.05; letter-spacing:1.5px}
+    .section-head p{font-size:17px; color:var(--gray-dark); margin:16px auto 0; max-width:720px}
+
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+
+    .card{
+      background:var(--card-bg);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:24px;
+    }
+    .card h3{font-size:24px; margin-bottom:10px; letter-spacing:1px}
+    .card p{color:var(--gray-dark); margin:0}
+
+    .tool{display:flex; gap:14px; align-items:flex-start; min-height:130px}
+    .ico{
+      flex:none; width:46px; height:46px; border-radius:14px;
+      background:var(--highlight); color:var(--orange);
+      display:grid; place-items:center; font-size:22px;
+      border:1px solid var(--border);
+    }
+
+    .rule{
+      width:80px; height:4px; background:var(--orange); border-radius:2px; margin:14px 0;
+    }
+
+    .simple-box{
+      background:var(--orange);
+      color:#fff;
+      border-radius:var(--radius);
+      padding:30px;
+    }
+    .simple-box h3{color:#fff; font-size:30px; letter-spacing:1px}
+    .simple-box p{color:#fff; opacity:.95}
+    .simple-box .label{color:var(--highlight); font-weight:800; font-family:var(--bebas); letter-spacing:2px}
+
+    /* ---------- STEPS ---------- */
+    .steps{display:grid; gap:18px}
+    .step{
+      background:var(--card-bg);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      overflow:hidden;
+    }
+    .step-top{
+      display:grid; grid-template-columns:72px 1fr auto auto; gap:16px;
+      align-items:center;
+      padding:22px 24px;
+      background:var(--cream);
+      border-bottom:1px solid var(--border);
+    }
+    .step-check{
+      display:flex; align-items:center; gap:8px;
+      cursor:pointer; font-weight:700; font-size:13px; color:var(--gray-dark);
+      font-family:var(--nunito);
+      user-select:none;
+    }
+    .step-check input{width:18px; height:18px; accent-color:var(--orange); cursor:pointer; margin:0}
+    .step.is-done{opacity:.5; filter:grayscale(.7)}
+    .step.is-done .step-top{background:#e6e6e6}
+    .step.is-done .step-title h3{text-decoration:line-through}
+    .step-num{
+      width:54px; height:54px; border-radius:var(--radius-sm);
+      background:var(--orange); color:#fff; display:grid; place-items:center;
+      font-weight:950; font-size:22px; font-family:var(--bebas); letter-spacing:1px;
+    }
+    .step-title h3{font-size:26px; letter-spacing:1px}
+    .step-title p{margin:5px 0 0; color:var(--gray-mid); font-size:15px}
+    .time{
+      background:var(--highlight); color:var(--black); border:1px solid var(--border);
+      padding:8px 12px; border-radius:999px; font-weight:800; font-size:13px;
+      white-space:nowrap;
+    }
+    .step-body{padding:24px}
+
+    .kid{
+      border-left:4px solid var(--orange);
+      background:var(--cream);
+      padding:16px 18px;
+      border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+      margin:18px 0;
+    }
+    .kid b{color:var(--orange)}
+
+    .do-list{display:grid; gap:11px; margin:18px 0}
+    .do{
+      display:grid; grid-template-columns:30px 1fr; gap:12px;
+      align-items:flex-start;
+      padding:13px;
+      background:var(--cream);
+      border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+    }
+    .do .check{
+      width:26px; height:26px; border-radius:50%; background:var(--orange); color:#fff;
+      display:grid; place-items:center; font-weight:900; font-size:14px;
+    }
+
+    .warn, .ok{
+      display:grid; grid-template-columns:40px 1fr; gap:12px; align-items:flex-start;
+      padding:16px; border-radius:var(--radius-sm);
+      margin:18px 0;
+    }
+    .warn{background:#fff5f5; border:1px solid #fecaca; color:#7f1d1d}
+    .ok{background:#f0fdf4; border:1px solid #bbf7d0; color:#064e3b}
+    .warn .wico, .ok .wico{font-size:24px}
+
+    .code{
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background:var(--black); color:#f1f5f9;
+      border-radius:var(--radius-sm);
+      padding:18px;
+      overflow:auto;
+      font-size:14px;
+      line-height:1.55;
+      border:1px solid #333;
+      margin:16px 0;
+      white-space:pre;
+    }
+
+    .table-wrap{overflow:auto; border-radius:var(--radius-sm); border:1px solid var(--border); margin:18px 0}
+    table{width:100%; border-collapse:collapse; background:var(--card-bg)}
+    th,td{padding:14px 16px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top}
+    th{background:var(--black); color:#fff; font-size:14px; font-family:var(--bebas); letter-spacing:1px}
+    tr:last-child td{border-bottom:0}
+    td:first-child{font-weight:800; color:var(--black)}
+
+    .pill{
+      display:inline-flex; align-items:center; border-radius:999px;
+      padding:5px 10px; background:var(--cream); color:var(--black); font-weight:800; font-size:12px;
+      border:1px solid var(--border);
+    }
+
+    .progress-box{
+      background:var(--card-bg); border:1px solid var(--border);
+      border-radius:var(--radius); padding:24px;
+    }
+    .progress-bar{height:14px; background:var(--border); border-radius:999px; overflow:hidden}
+    .progress-fill{height:100%; background:var(--orange); width:0%}
+    .check-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:18px}
+    label.tickbox{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:14px; border:1px solid var(--border); border-radius:var(--radius-sm);
+      background:var(--cream); cursor:pointer;
+    }
+    label.tickbox input{margin-top:4px; transform:scale(1.2); accent-color:var(--orange)}
+
+    .faq{display:grid; gap:12px}
+    details{
+      background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 18px;
+    }
+    summary{cursor:pointer; font-weight:800; color:var(--black); font-size:17px}
+    details p{color:var(--gray-dark); margin-bottom:0; margin-top:10px}
+
+    .footer{
+      padding:50px 0 30px;
+      background:var(--black);
+      color:#e5e5e5;
+    }
+    .footer h2{color:#fff}
+    .footer a{color:var(--highlight)}
+    .footer p{color:#d4d4d4}
+    .small{font-size:13px; color:var(--gray-mid)}
+
+    .whatsapp-float{
+      position:fixed; right:18px; bottom:90px; z-index:55;
+      width:60px; height:60px; border-radius:50%;
+      background:#25D366; color:#fff;
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none;
+      box-shadow:0 4px 14px rgba(0,0,0,.25);
+      animation:pulse-whatsapp 1.6s ease-in-out infinite;
+    }
+    .whatsapp-float svg{width:28px; height:28px; fill:currentColor}
+    @keyframes pulse-whatsapp{
+      0%,100%{transform:scale(1); box-shadow:0 4px 14px rgba(0,0,0,.25)}
+      50%{transform:scale(1.12); box-shadow:0 6px 22px rgba(37,211,102,.45)}
+    }
+    .whatsapp-float:hover{animation:none; transform:scale(1.08)}
+    .site-link-bottom{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:54;
+      background:var(--card-bg); border:1px solid var(--border); border-radius:999px;
+      padding:10px 18px; font-weight:700; font-size:14px;
+      box-shadow:0 4px 12px rgba(0,0,0,.08);
+    }
+    .site-link-bottom a{color:var(--black); text-decoration:none}
+
+    .steps-toc{
+      background:var(--card-bg);
+      border-bottom:1px solid var(--border);
+      padding:18px 0;
+    }
+    .steps-toc h3{font-family:var(--bebas); font-size:24px; letter-spacing:1px; margin-bottom:12px; text-align:center}
+    .steps-toc .toc-grid{
+      display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px;
+    }
+    .steps-toc a{
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 12px; border-radius:var(--radius-sm);
+      background:var(--cream); border:1px solid var(--border);
+      color:var(--black); font-weight:700; font-size:13px;
+      text-decoration:none; line-height:1.35;
+    }
+    .steps-toc a:hover{background:var(--highlight); text-decoration:none}
+    .steps-toc a span{
+      flex-shrink:0;
+      width:24px; height:24px; border-radius:50%;
+      background:var(--orange); color:#fff;
+      display:grid; place-items:center;
+      font-weight:800; font-size:12px; font-family:var(--nunito);
+    }
+
+    @media(max-width:900px){
+      .hero-grid,.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+      .hero{padding-top:48px}
+      .step-top{grid-template-columns:54px 1fr; align-items:start}
+      .time{grid-column:2}
+      .check-grid{grid-template-columns:1fr}
+      .nav-inner{align-items:flex-start; flex-direction:column}
+      section{padding:48px 0}
+    }
+
+    @media print{
+      .nav,.top-progress,.whatsapp-float,.site-link-bottom{display:none}
+      body{background:#fff}
+      .hero{min-height:auto; padding:30px 0}
+      section{page-break-inside:avoid; padding:24px 0}
+      .card,.step,.progress-box{box-shadow:none}
+      .container{width:100%; padding:0 12mm}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="nav-title">De l'idée au site · Amal Boukhdhir</div>
+      <div class="nav-links">
+        <a href="#objectif">Objectif</a>
+        <a href="#outils">Outils</a>
+        <a href="#business-brain">Business Brain</a>
+        <a href="#jour1">Jour 1</a>
+        <a href="#jour2">Jour 2</a>
+        <a href="#jour3">Jour 3</a>
+        <a href="#regles">Règles</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="steps-toc">
+    <div class="container">
+      <h3>Sommaire des étapes</h3>
+      <div class="toc-grid">
+        <a href="#step-1"><span>1</span>Remplir ton Business Brain</a>
+        <a href="#step-2"><span>2</span>Définir l'identité visuelle</a>
+        <a href="#step-3"><span>3</span>Créer la page web</a>
+        <a href="#step-4"><span>4</span>Créer un compte GitHub</a>
+        <a href="#step-5"><span>5</span>Créer un token GitHub</a>
+        <a href="#step-6"><span>6</span>Créer un compte Vercel</a>
+        <a href="#step-7"><span>7</span>Acheter le domaine</a>
+        <a href="#step-8"><span>8</span>Vérifier le site en ligne</a>
+        <a href="#step-9"><span>9</span>Ajouter Calendly</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="top-progress">
+    <div class="container">
+      <span class="top-progress-text" id="topProgressText">0 / 9 étapes</span>
+      <div class="top-progress-bar"><div class="top-progress-fill" id="topProgressFill"></div></div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge"><span></span> MANUEL PRATIQUE · ÉDITION 2026</div>
+        <h1>De l'idée au site web.</h1>
+        <p class="lead">
+          Une méthode pour construire un site professionnel sur ton propre nom de domaine,
+          <strong>sans outil complexe ni automatisation inutile</strong>. Tu n'as pas besoin d'être développeuse.
+          Juste de suivre les étapes dans l'ordre.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#jour1">Commencer étape par étape</a>
+          <a class="btn btn-secondary" href="#checklist">Voir la checklist</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>La stack simplifiée</h3>
+        <div class="mini-flow">
+          <div class="mini-step"><div class="n">1</div><div><b>Claude Code + Ollama/Kimi</b><small>Gratuit en local. Option cloud ~20 $/mois pour plus de puissance.</small></div></div>
+          <div class="mini-step"><div class="n">2</div><div><b>GitHub</b><small>Range les fichiers du site en ligne.</small></div></div>
+          <div class="mini-step"><div class="n">3</div><div><b>Vercel</b><small>Affiche le site sur Internet.</small></div></div>
+          <div class="mini-step"><div class="n">4</div><div><b>Cloudflare</b><small>Gère ton nom de domaine et tes redirections (~10 $/an).</small></div></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section style="background:var(--black); color:#fff; padding:48px 0; border-bottom:1px solid var(--border)">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:1.2fr .8fr; gap:32px; align-items:center">
+        <div>
+          <div style="font-family:var(--bebas); letter-spacing:2px; color:var(--orange); font-size:14px; margin-bottom:10px">EXEMPLE RÉEL</div>
+          <h2 style="color:#fff; font-size:clamp(32px, 4vw, 52px); line-height:1.05; letter-spacing:1px">Toutes ces étapes ont été faites en une journée.</h2>
+          <p style="color:#d4d4d4; font-size:17px; margin:16px 0 22px; max-width:620px">
+            Ce manuel a servi à construire le site d'Asmae Hajji : <a href="https://asmaehajji.com/fr" target="_blank" rel="noopener" style="color:var(--highlight)">https://asmaehajji.com/fr</a>.
+            En partant du Business Brain, chaque section a été itérée avec Claude Code, puis déployée automatiquement sur Vercel.
+          </p>
+          <a class="btn btn-primary" href="https://asmaehajji.com/fr" target="_blank" rel="noopener" style="background:var(--orange); color:#fff">Voir le site live →</a>
+        </div>
+        <div>
+          <img src="assets/img65.png" alt="Capture d'écran du site asmaehajji.com" style="width:100%; border-radius:var(--radius); border:1px solid rgba(255,255,255,.15)">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--highlight); padding:36px 0; text-align:center; border-bottom:1px solid var(--border)">
+    <div class="container">
+      <p style="margin:0; font-family:var(--bebas); font-size:clamp(26px, 4vw, 44px); letter-spacing:1.5px; color:var(--black); line-height:1.15">
+        « Complexity is the enemy of execution. »
+      </p>
+      <p style="margin:10px 0 0; font-weight:800; color:var(--gray-dark); font-size:14px; letter-spacing:1px">— TONY ROBBINS</p>
+    </div>
+  </section>
+
+  <main>
+
+    <section id="objectif">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Le résultat final</div>
+          <h2>Ce qu'on veut construire</h2>
+          <p>Un site web simple, propre et durable. Juste une vitrine qui te représente et qui invite au contact.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Un site sur ton domaine</h3>
+            <p>Un nom de domaine à ton nom ou à ton marque, avec HTTPS activé automatiquement. Le seul coût récurrent : <span class="hl">~10 $ par an</span> chez Cloudflare.</p>
+          </div>
+          <div class="card">
+            <h3>Une page d'accueil claire</h3>
+            <p>Ton message, ton offre, ta bio et un appel à l'action. Le visiteur comprend qui tu es et comment te contacter en quelques secondes.</p>
+          </div>
+          <div class="card">
+            <h3>Une page guide ou ressource</h3>
+            <p>Un PDF ou une page de contenu utile qui montre ton expertise. Le lien est direct.</p>
+          </div>
+        </div>
+
+        <div class="simple-box" style="margin-top:28px">
+          <div class="label">Pourquoi cette méthode ?</div>
+          <h3>Parce qu'un site efficace n'a pas besoin d'automatisation compliquée.</h3>
+          <p>Tu peux ajouter Calendly pour les réservations, un simple formulaire de contact, ou un lien WhatsApp. Le reste se fait dans la conversation réelle. Moins d'outils = moins de choses qui cassent.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="outils">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Avant de toucher au site</div>
+          <h2>La boîte à outils</h2>
+          <p>Tout est gratuit, sauf le nom de domaine. Voici exactement ce que tu utiliseras.</p>
+        </div>
+
+        <div class="grid-4">
+          <div class="card tool"><div class="ico">🤖</div><div><h3>Claude Code + Ollama/Kimi</h3><p>Gratuit en local avec Ollama. Pour plus de puissance et de simplicité, l'option cloud coûte environ <span class="hl">20 $/mois</span>.</p></div></div>
+          <div class="card tool"><div class="ico">🗂️</div><div><h3>GitHub</h3><p>Stocke les fichiers du site : index.html, guide/, assets.</p></div></div>
+          <div class="card tool"><div class="ico">🚀</div><div><h3>Vercel</h3><p>Héberge le site et le redéploie automatiquement quand GitHub change.</p></div></div>
+          <div class="card tool"><div class="ico">🌐</div><div><h3>Cloudflare</h3><p>Achat du domaine + gestion DNS + redirections professionnelles.</p></div></div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:28px">
+          <table>
+            <thead>
+              <tr><th>Outil</th><th>Rôle</th><th>Coût</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Claude Code + Ollama/Kimi</td><td>Créer le contenu, le design et le code</td><td>Gratuit en local / <span class="hl">~20 $/mois</span> sur le cloud</td></tr>
+              <tr><td>GitHub</td><td>Stocker le code</td><td>Gratuit</td></tr>
+              <tr><td>Vercel</td><td>Héberger le site</td><td>Gratuit</td></tr>
+              <tr><td>Cloudflare</td><td>Domaine + DNS + redirections</td><td><span class="hl">~10 $/an</span></td></tr>
+              <tr><td>Calendly (optionnel)</td><td>Réservation de rendez-vous</td><td>Gratuit</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="small" style="margin-top:18px; text-align:center">
+          <strong>Coût total pour démarrer : ~10 $ par an.</strong> Tu ne paies que le nom de domaine chez Cloudflare.
+        </p>
+      </div>
+    </section>
+
+    <section id="jour1">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Jour 1</div>
+          <h2>Fondations & construction</h2>
+          <p>On pose les bases : ton Business Brain, ton contenu, ton design et ton code.</p>
+        </div>
+
+        <div class="steps">
+
+          <article class="step" id="step-1">
+            <div class="step-top">
+              <div class="step-num">1</div>
+              <div class="step-title"><h3>Remplir ton Business Brain</h3><p>Clarifie ton offre, ton client idéal et ta voix avant d'écrire une ligne de code.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="1"> Fait</label>
+              <div class="time">45-60 min</div>
+            </div>
+            <div class="step-body">
+              <div class="kid"><b>Explication simple :</b> Avant de construire une maison, on dessine les plans. Le Business Brain est ton plan.</div>
+              <p>Utilise le document <strong>Business Brain</strong> pour répondre à ces questions :</p>
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Qui tu aides (tranche, problème, situation).</div></div>
+                <div class="do"><div class="check">2</div><div>Quel résultat concret tu leur apportes.</div></div>
+                <div class="do"><div class="check">3</div><div>Comment tu es différente des autres coachs / conseillères.</div></div>
+                <div class="do"><div class="check">4</div><div>Quels sont tes 1 à 3 services ou offres principales.</div></div>
+                <div class="do"><div class="check">5</div><div>Sur quelles plateformes tu veux être vue et entendue.</div></div>
+              </div>
+              <div class="code"><a href="business-brain/business-brain.pdf" target="_blank" style="color:#FFE8A8">📄 Télécharger le Business Brain (PDF)</a><br><a href="business-brain/business-brain.html" style="color:#FFE8A8">🌐 Voir le Business Brain en ligne</a></div>
+              <div class="ok"><div>✅</div><div><b>Pourquoi ce document est utile :</b> c'est la source de vérité unique pour ton business, ta marque et ta stratégie de croissance. Tu le partages avec ton assistant IA, ton stratège ou ton équipe pour qu'ils aient le contexte complet sur qui tu es, ce que tu fais et où tu vas.</div></div>
+              <div class="ok"><div>🔁</div><div><b>Garde l’œil ouvert sur les demandes de Claude Code :</b> pendant que tu remplis ton Business Brain, Claude Code te demandera souvent la permission pour lire ou modifier des dossiers et des documents. Clique <strong>Yes / Allow</strong> à chaque fois. C’est ce qui lui permet d’écrire directement dans tes fichiers et de t’éviter du copier-coller manuel.<br><img src="assets/img2.png" alt="Demande de permission de Claude Code pour modifier un dossier" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></div></div>
+            </div>
+          </article>
+
+          <article class="step" id="step-2">
+            <div class="step-top">
+              <div class="step-num">2</div>
+              <div class="step-title"><h3>Définir l'identité visuelle avec Claude Code</h3><p>Avant de coder, fixe le look de ta marque : logo, favicon, polices et couleurs.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="2"> Fait</label>
+              <div class="time">30 min</div>
+            </div>
+            <div class="step-body">
+              <div class="kid"><b>Explication simple :</b> l'identité visuelle, c'est l'habit de ta marque. Si elle est claire avant, le site se construit beaucoup plus vite.</div>
+              <p>Donne ce prompt à Claude Code en lui pointant ton Business Brain :</p>
+              <div class="code">"Utilise le document Business Brain à ce chemin sur mon ordinateur :
+C:/Users/boukh_2njb9wx/OneDrive/Documents/Claude/Projects/CLAUDE/coaching/active/website-sans-funnel/business-brain/business-brain.pdf
+
+Définis mon identité visuelle selon mes préférences et mon positionnement décrits dans le Business Brain. Propose-moi :
+- un logo simple pour mon site web,
+- un favicon,
+- 2 polices principales compatibles web,
+- 2 couleurs principales pour mon site,
+- une direction graphique cohérente avec mon audience et mon offre.
+
+Fais-le comme un designer web graphiste senior, de manière professionnelle."
+
+> <b>Astuce :</b> si Claude Code a du mal à lire le PDF, donne-lui plutôt le chemin du fichier <code>business-brain.html</code>, qui est du texte lisible.</div>
+              <div class="ok"><div>✅</div><div><b>Résultat :</b> un mini-guide de marque (logo, favicon, polices, couleurs) que tu pourras réutiliser pour ton site, tes PDF et tes posts.</div></div>
+            </div>
+          </article>
+
+          <article class="step" id="step-3">
+            <div class="step-top">
+              <div class="step-num">3</div>
+              <div class="step-title"><h3>Créer la page web avec Claude Code</h3><p>Génère le fichier index.html en se basant sur le Business Brain et sur l'identité visuelle définie.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="3"> Fait</label>
+              <div class="time">2-3 h</div>
+            </div>
+            <div class="step-body">
+              <p>Demande à Claude Code de créer un fichier <code>index.html</code> avec ces sections :</p>
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Hero : ton message principal + appel à l'action.</div></div>
+                <div class="do"><div class="check">2</div><div>Problème / solution : ce que ta cliente traverse et comment tu l'aides.</div></div>
+                <div class="do"><div class="check">3</div><div>Bio : qui tu es, ton parcours, ta crédibilité.</div></div>
+                <div class="do"><div class="check">4</div><div>Offre / ressource : ce qu'elle peut consulter ou télécharger.</div></div>
+                <div class="do"><div class="check">5</div><div>Contact / réservation : bouton Calendly, WhatsApp ou formulaire simple.</div></div>
+                <div class="do"><div class="check">6</div><div>FAQ : 3 à 5 questions courtes.</div></div>
+              </div>
+              <div class="code">Prompt type à donner dans Claude Code :
+
+"Utilise les documents suivants sur mon ordinateur :
+1. Business Brain : C:/Users/boukh_2njb9wx/OneDrive/Documents/Claude/Projects/CLAUDE/coaching/active/website-sans-funnel/business-brain/business-brain.pdf
+2. Identité visuelle : [colle ici le chemin ou le contenu du fichier identité-visuelle.txt]
+
+Crée un site web avec la technologie JavaScript la plus récente. Base-toi sur le Business Brain (couleur de marque, services, cliente idéale, voix, parcours) et sur l'identité visuelle définie (logo, favicon, polices, couleurs).
+
+Intègre mon WhatsApp Business, mon lien de réservation de rendez-vous via Calendly, et mon lien de paiement Stripe pour un de mes services.
+
+Génère une page web complète, mobile-first, avec le design system de mon identité visuelle.
+Sections : hero, qui j'aide, ma méthode, 1 à 3 services, bio, témoignage ou résultat, FAQ, contact.
+Pas de framework externe. Un seul fichier autonome et simple. Fais-le comme un designer web graphiste senior, de manière professionnelle."
+
+> <b>Astuce :</b> si Claude Code a du mal à lire le PDF, donne-lui plutôt le chemin du fichier <code>business-brain.html</code>, qui est du texte lisible. Pour l'identité visuelle, un fichier <code>identite-visuelle.txt</code> ou un message dans le chat suffit.</div>
+              <div class="ok"><div>💡</div><div><b>Astuce :</b> copie le lien de cette page (<a href="https://amalboukhdhir.ca/business" target="_blank" rel="noopener"><code>https://amalboukhdhir.ca/business</code></a>), donne-le à Claude Code et demande-lui de reproduire exactement cette structure et cette façon de faire. Une fois que ça fonctionne pour toi, tu pourras passer à des choses plus complexes.</div></div>
+              <div class="ok"><div>🖼️</div><div><b>Rendu de mon site web :</b> voici à quoi ressemble cette page une fois en ligne.<br><img src="assets/amal-webpage.png" alt="Capture d'écran de amalboukhdhir.ca/business" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></div></div>
+              <div class="warn"><div class="wico">⚠️</div><div><b>Piège à éviter :</b> ne pas essayer d'écrire 10 pages. Un site qui convertit a une page d'accueil claire, une page ressource et une façon de te contacter. Le reste viendra plus tard.</div></div>
+              <div class="kid"><b>Optionnel — si Claude Code te propose Next.js :</b> Claude Code peut te proposer Next.js (la technologie JavaScript la plus récente basée sur React) pour générer ton site. Même si ce n'est pas nécessaire pour une simple vitrine, voici les étapes si tu choisis cette option sur Windows :
+                <div class="do-list" style="margin-top:14px">
+                  <div class="do"><div class="check">1</div><div>Va sur <b>nodejs.org</b> et télécharge la version LTS recommandée pour Windows.</div></div>
+                  <div class="do"><div class="check">2</div><div>Lance l'installateur (<code>.msi</code>) et clique sur <b>Next → Next</b> jusqu'à la fin.</div></div>
+                  <div class="do"><div class="check">3</div><div>Redémarre ton ordinateur si l'installateur te le demande.</div></div>
+                  <div class="do"><div class="check">4</div><div>Ouvre PowerShell : touche Windows, tape <code>PowerShell</code>, puis lance <b>Windows PowerShell</b>.</div></div>
+                  <div class="do"><div class="check">5</div><div>Vérifie l'installation en tapant :<br><code>node --version</code> puis <code>npm --version</code></div></div>
+                  <div class="do"><div class="check">6</div><div>Place-toi dans le dossier de ton projet :<br><code>cd C:\Users\ton-compte\Documents\amal-site</code></div></div>
+                  <div class="do"><div class="check">7</div><div>Lance le projet Next.js créé par Claude Code :<br><code>npm run dev</code></div></div>
+                  <div class="do"><div class="check">8</div><div>Ouvre ton navigateur à l'adresse affichée, généralement <code>http://localhost:3000</code>.</div></div>
+                </div>
+                <p style="margin-bottom:0"><b>Note :</b> pour ce tutoriel, un simple fichier <code>index.html</code> suffit. Next.js est optionnel ; il devient utile si tu veux un blog, des formulaires dynamiques ou plusieurs pages complexes plus tard.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="step" id="step-4">
+            <div class="step-top">
+              <div class="step-num">4</div>
+              <div class="step-title"><h3>Créer un compte GitHub et connecter Claude Code</h3><p>Gratuit. C'est ton armoire en ligne, reliée à ton assistant.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="4"> Fait</label>
+              <div class="time">10 min</div>
+            </div>
+            <div class="step-body">
+              <p><img src="assets/github-signup.png" alt="Page d'inscription GitHub" loading="lazy"></p>
+              <p class="small" style="text-align:center; color:var(--gray-mid)">Inscris-toi sur GitHub en utilisant ton compte Gmail.</p>
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Va sur github.com/signup.</div></div>
+                <div class="do"><div class="check">2</div><div>Crée un compte avec ton adresse de contact (Gmail recommandé).</div></div>
+                <div class="do"><div class="check">3</div><div>Note ton nom d'utilisateur. Tu en auras besoin pour connecter Claude Code à ton repo.</div></div>
+              </div>
+              <p><img src="assets/github-username.png" alt="Profil GitHub avec nom d'utilisateur" loading="lazy"></p>
+            </div>
+          </article>
+
+          <article class="step" id="step-5">
+            <div class="step-top">
+              <div class="step-num">5</div>
+              <div class="step-title"><h3>Créer un token GitHub pour Claude Code</h3><p>Permet à Claude Code de pousser les changements automatiquement.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="5"> Fait</label>
+              <div class="time">10 min</div>
+            </div>
+            <div class="step-body">
+              <div class="kid"><b>Explication simple :</b> un token, c'est une clé que tu donnes à Claude Code pour qu'il puisse modifier ton repo sans que tu ailles sur GitHub à chaque changement.</div>
+              <p><img src="assets/github-token.png" alt="Création d'un token GitHub" loading="lazy"></p>
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Dans GitHub, va dans <b>Settings → Developer settings → Personal access tokens → Tokens (classic)</b>.</div></div>
+                <div class="do"><div class="check">2</div><div>Clique sur <b>Generate new token (classic)</b>.</div></div>
+                <div class="do"><div class="check">3</div><div>Donne un nom, ex. <span class="pill">Claude Code site</span>, et coche la permission <b>repo</b>.</div></div>
+                <div class="do"><div class="check">4</div><div>Génère le token et copie-le immédiatement.</div></div>
+                <div class="do"><div class="check">5</div><div>Donne ce token à Claude Code avec ce prompt : "Connecte mon repo GitHub amal-site à Claude Code avec ce token."</div></div>
+              </div>
+              <div class="ok"><div>✅</div><div><b>Résultat :</b> à chaque modification du code, Claude Code envoie les changements sur GitHub automatiquement. Tu n'as plus besoin de glisser-déposer les fichiers à la main.</div></div>
+              <div class="ok"><div>🔐</div><div><b>Validation à chaque modification :</b> après avoir donné le token, Claude Code te demandera à chaque fois de valider qu’il peut modifier ton repo sur GitHub. Tu lui dis <strong>Yes</strong>, et il pousse les changements tout seul. Cela économise beaucoup de casse-tête et tu n’as pas à te connecter manuellement à GitHub à chaque mise à jour.<br><img src="assets/img42.png" alt="Validation de Claude Code pour modifier le repo GitHub" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></div></div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="jour2">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Jour 2</div>
+          <h2>Déploiement & domaine</h2>
+          <p>On met le site en ligne et on achète le nom de domaine.</p>
+        </div>
+
+        <div class="steps">
+
+          <article class="step" id="step-6">
+            <div class="step-top">
+              <div class="step-num">6</div>
+              <div class="step-title"><h3>Créer un compte Vercel</h3><p>Hébergement gratuit et simple.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="6"> Fait</label>
+              <div class="time">5 min</div>
+            </div>
+            <div class="step-body">
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Va sur vercel.com/signup.</div></div>
+                <div class="do"><div class="check">2</div><div>Choisis <b>Continue with GitHub</b> pour lier automatiquement ton compte.</div></div>
+              </div>
+              <p><img src="assets/img50.png" alt="Connexion Vercel via GitHub" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <div class="ok"><div>🔗</div><div><b>Pourquoi relier GitHub :</b> quand ton compte Vercel est connecté à GitHub, Vercel peut accéder directement au repo de ton site web. Cela facilite l’importation et le déploiement automatique à chaque modification.</div></div>
+
+              <div class="kid"><b>Étape 6.3 :</b> installer l'intégration GitHub dans Vercel</div>
+              <div class="do-list">
+                <div class="do"><div class="check">3</div><div>Une fois connecté à Vercel, clique sur ton avatar → <b>Settings → Integrations</b>.</div></div>
+                <div class="do"><div class="check">4</div><div>Vérifie que l’intégration <b>GitHub</b> est installée.</div></div>
+                <div class="do"><div class="check">5</div><div>Si demandé, autorise Vercel à accéder à tes repositories.</div></div>
+              </div>
+              <p><img src="assets/img51.png" alt="Installation de l'intégration GitHub dans Vercel" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <div class="ok"><div>✅</div><div><b>Résultat :</b> Vercel a maintenant la permission de lire le repo de ton site sur GitHub. Sans cette étape, Vercel ne pourra pas importer ton projet.</div></div>
+
+              <div class="kid"><b>Étape 6.4 :</b> importer le projet de GitHub vers Vercel</div>
+              <div class="do-list">
+                <div class="do"><div class="check">6</div><div>Dans Vercel, clique sur <b>Add New → Project</b>.</div></div>
+                <div class="do"><div class="check">7</div><div>Sélectionne le repo de ton site web (<span class="pill">amal-site</span>).</div></div>
+                <div class="do"><div class="check">8</div><div>Clique sur <b>Import</b> puis sur <b>Deploy</b>.</div></div>
+              </div>
+              <p><img src="assets/img52.png" alt="Import du repo GitHub dans Vercel" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <p>Après 1 à 2 minutes, tu obtiens un lien temporaire :</p>
+              <div class="code">https://ton-repo.vercel.app</div>
+              <div class="ok"><div>✅</div><div>Ouvre ce lien dans ton navigateur. Tu dois voir ton site.</div></div>
+
+              <div class="kid"><b>Étape 6.5 :</b> déploiement automatique via Claude Code avec un token Vercel (optionnel)</div>
+              <p>Cette méthode permet à Claude Code de créer le projet, brancher le domaine et déclencher le déploiement sans que tu cliques dans l'interface Vercel.</p>
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Va sur <a href="https://vercel.com/account/tokens" target="_blank" rel="noopener">vercel.com/account/tokens</a>.</div></div>
+              </div>
+              <p><img src="assets/img60.png" alt="Page des tokens Vercel dans les paramètres du compte" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <p class="small" style="text-align:center; color:var(--gray-mid)">Va dans Account Settings → Tokens pour créer une nouvelle clé Vercel.</p>
+              <div class="do-list">
+                <div class="do"><div class="check">2</div><div>Clique sur <b>Create Token</b> et donne-lui un nom, ex. <span class="pill">Claude Code deploy</span>.</div></div>
+                <div class="do"><div class="check">3</div><div>Coche les permissions : <b>Projects (Read/Write)</b>, <b>Deployments (Read/Write)</b> et <b>Domains (Read/Write)</b>.</div></div>
+                <div class="do"><div class="check">4</div><div>Copie le token et donne-le à Claude Code avec ce prompt : "Voici mon token Vercel : PASTE_TOKEN. Déploie automatiquement mon site."</div></div>
+                <div class="do"><div class="check">5</div><div>Claude Code exécute la commande de déploiement Vercel en ligne de commande à ta place. Tu n'as rien à taper toi-même.</div></div>
+              </div>
+              <p><img src="assets/img57.png" alt="Message Vercel confirmant le déploiement du site" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <p class="small" style="text-align:center; color:var(--gray-mid)">Exemple du message que tu recevras quand Vercel a terminé le déploiement.</p>
+              <div class="ok"><div>✅</div><div><b>Résultat :</b> le site est créé et déployé directement depuis la conversation Claude Code. Même si tu n'as pas encore acheté de nom de domaine, Vercel te donne un lien temporaire gratuit, par exemple : <a href="https://asmaehajji-website-31dsg1c6k-asmae1.vercel.app/fr" target="_blank" rel="noopener">https://asmaehajji-website-31dsg1c6k-asmae1.vercel.app/fr</a>. Les prochaines modifications peuvent aussi être poussées et redéployées de la même manière.</div></div>
+              <div class="simple-box" style="margin-top:22px">
+                <div class="label">La beauté du système</div>
+                <h3>Chaque modification se déploie toute seule.</h3>
+                <p>Grâce aux tokens ajoutés, Claude Code envoie automatiquement chaque changement sur GitHub. Vercel reçoit la mise à jour depuis GitHub et refait le déploiement automatiquement. Tu n'as <strong>aucune manipulation manuelle</strong> à faire : tout est synchro en arrière-plan.</p>
+              </div>
+              <div class="warn"><div class="wico">⚠️</div><div><b>Sécurité :</b> révoque le token Vercel dès que la mise en place est terminée. Ne laisse jamais cette clé active plus longtemps que nécessaire.</div></div>
+            </div>
+          </article>
+
+          <article class="step" id="step-7">
+            <div class="step-top">
+              <div class="step-num">7</div>
+              <div class="step-title"><h3>Acheter ton nom de domaine sur Cloudflare</h3><p>Le seul coût : environ 10 $ par an.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="7"> Fait</label>
+              <div class="time">10 min</div>
+            </div>
+            <div class="step-body">
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Va sur cloudflare.com et crée un compte. L'inscription se fait facilement via ton compte GitHub.</div></div>
+              </div>
+              <p><img src="assets/img58.png" alt="Page d'inscription Cloudflare avec option Continue with GitHub" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <p class="small" style="text-align:center; color:var(--gray-mid)">Inscris-toi sur Cloudflare en cliquant sur Continue with GitHub.</p>
+              <div class="do-list">
+                <div class="do"><div class="check">2</div><div>Dans le tableau de bord, clique sur <b>Registrar → Register domains</b>.</div></div>
+                <div class="do"><div class="check">3</div><div>Cherche ton nom (par exemple <span class="pill">asmaehajji.com</span>).</div></div>
+                <div class="do"><div class="check">4</div><div>Ajoute au panier et paie. Le prix est d'environ <span class="hl">10 $ par an</span>.</div></div>
+              </div>
+              <p><img src="assets/img59.png" alt="Recherche d'un nom de domaine sur Cloudflare" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <p class="small" style="text-align:center; color:var(--gray-mid)">Exemple : recherche de asmaehajji.com dans le registrar Cloudflare.</p>
+              <div class="kid"><b>Étape 7.5 :</b> connecter Cloudflare et Vercel automatiquement avec un token Cloudflare (optionnel)</div>
+              <p>Si tu veux que Claude Code configure les enregistrements DNS pour relier ton domaine Cloudflare à Vercel sans intervention manuelle, il te faut un token Cloudflare avec les bonnes permissions.</p>
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Dans Cloudflare : clique sur ton avatar → <b>My Profile → API Tokens → Create Token</b>.</div></div>
+                <div class="do"><div class="check">2</div><div>Utilise le modèle personnalisé et coche les permissions : <b>Zone (Read)</b> et <b>DNS (Edit)</b>.</div></div>
+                <div class="do"><div class="check">3</div><div>Limite le token à la zone de ton domaine pour plus de sécurité.</div></div>
+                <div class="do"><div class="check">4</div><div>Copie le token et donne-le à Claude Code avec ce prompt : "Voici mon token Cloudflare : PASTE_TOKEN. Relie mon domaine [tondomaine.com] à mon projet Vercel et configure les DNS automatiquement."</div></div>
+              </div>
+              <p><img src="assets/img63.png" alt="Création d'un token API Cloudflare pour connecter Vercel" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <p class="small" style="text-align:center; color:var(--gray-mid)">Exemple : Cloudflare demande la création d'un token API pour connecter le domaine à Vercel.</p>
+              <p><img src="assets/img61.png" alt="Déploiement automatique du domaine Cloudflare vers Vercel" loading="lazy" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+              <p class="small" style="text-align:center; color:var(--gray-mid)">Claude Code exécute le déploiement et le redeploiement automatiquement.</p>
+              <div class="ok"><div>✅</div><div><b>Résultat :</b> Claude Code peut ajouter les enregistrements A et CNAME dans Cloudflare, désactiver temporairement le proxy le temps que Vercel valide le domaine, puis déployer et redéployer automatiquement le site à chaque modification sans que tu n'aies à intervenir.</div></div>
+              <div class="warn"><div class="wico">⚠️</div><div><b>Sécurité :</b> révoque le token Cloudflare dès que le domaine est branché. Ne le laisse pas actif inutilement.</div></div>
+              <div class="kid"><b>Conseil :</b> Ton nom personnel est le meilleur domaine. Il survivra à tous les changements de positionnement.</div>
+            </div>
+          </article>
+
+
+          <article class="step" id="step-8">
+            <div class="step-top">
+              <div class="step-num">8</div>
+              <div class="step-title"><h3>Vérifier que le site est en ligne</h3><p>On attend le vert dans Vercel.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="8"> Fait</label>
+              <div class="time">5 min à quelques heures</div>
+            </div>
+            <div class="step-body">
+              <p>Dans Vercel, le domaine doit afficher <b>Valid Configuration</b> en vert. Ensuite teste :</p>
+              <div class="code">https://tondomaine.ca
+https://www.tondomaine.ca</div>
+              <div class="ok"><div>✅</div><div>Tu dois voir le cadenas HTTPS à gauche de l'adresse. Vercel le génère gratuitement.</div></div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="jour3">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Jour 3</div>
+          <h2>Réservation, tests & lancement</h2>
+          <p>On ajoute un moyen de réserver et on teste tout avant d'annoncer.</p>
+        </div>
+
+        <div class="steps">
+
+          <article class="step" id="step-9">
+            <div class="step-top">
+              <div class="step-num">9</div>
+              <div class="step-title"><h3>Ajouter Calendly (optionnel)</h3><p>Pour que les visiteurs réservent un créneau.</p></div>
+              <label class="step-check"><input type="checkbox" data-step="9"> Fait</label>
+              <div class="time">15 min</div>
+            </div>
+            <div class="step-body">
+              <div class="do-list">
+                <div class="do"><div class="check">1</div><div>Crée un compte sur calendly.com.</div></div>
+                <div class="do"><div class="check">2</div><div>Crée un type de rendez-vous, ex. « Appel découverte 30 min ».</div></div>
+                <div class="do"><div class="check">3</div><div>Copie ton lien Calendly.</div></div>
+                <div class="do"><div class="check">4</div><div>Ajoute un bouton sur ton site qui ouvre Calendly en popup.</div></div>
+              </div>
+              <div class="warn"><div class="wico">⚠️</div><div><b>Alternative :</b> si tu n'aimes pas Calendly, un simple bouton WhatsApp ou un lien de contact vers contact@tondomaine.ca suffisent pour démarrer.</div></div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="regles">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">À retenir</div>
+          <h2>Les 5 règles pour ne pas te tromper</h2>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>1. GitHub avant Vercel</h3>
+            <p>Vercel se connecte à ton compte GitHub. Tu ne peux pas importer un repo avant de l'avoir créé.</p>
+          </div>
+          <div class="card">
+            <h3>2. Déployer avant de brancher le domaine</h3>
+            <p>Le domaine doit pointer vers un site qui existe déjà. Sinon Vercel n'a rien à afficher.</p>
+          </div>
+          <div class="card">
+            <h3>3. Attendre la propagation DNS</h3>
+            <p>Entre l'ajout des DNS et le moment où le site répond à ton domaine, ça peut prendre de 5 minutes à quelques heures.</p>
+          </div>
+          <div class="card">
+            <h3>4. Tester avant d'annoncer</h3>
+            <p>Ouvre le site sur téléphone, clique sur tous les boutons, vérifie ta redirection professionnelle. Ne partage pas un lien qui ne marche pas.</p>
+          </div>
+          <div class="card" style="grid-column:1/-1">
+            <h3>5. Moins d'outils = moins de risques</h3>
+            <p>Chaque outil ajouté est un point de défaillance. Commence avec GitHub + Vercel + Cloudflare. Ajoute le reste seulement si tu en as vraiment besoin.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="checklist">
+      <div class="container">
+        <div class="progress-box">
+          <div class="section-head" style="margin-bottom:12px">
+            <div class="eyebrow">Checklist interactive</div>
+            <h2 style="font-size:38px">Coche au fur et à mesure</h2>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <p class="small" id="progressText">0% terminé</p>
+          <div class="check-grid" id="checks">
+            <label class="tickbox"><input type="checkbox" data-key="c1"> J'ai rempli mon Business Brain.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c2"> J'ai le contenu de mon site (titre, bio, offre, FAQ).</label>
+            <label class="tickbox"><input type="checkbox" data-key="c3"> J'ai défini mes polices et couleurs.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c4"> J'ai un fichier index.html fonctionnel.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c5"> J'ai créé mon compte GitHub.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c6"> Mon code est sur GitHub.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c7"> J'ai créé mon compte Vercel.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c8"> Mon site est déployé sur le lien Vercel.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c9"> J'ai acheté mon domaine sur Cloudflare.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c10"> Mon domaine pointe vers Vercel.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c11"> J'ai configuré ma redirection professionnelle.</label>
+            <label class="tickbox"><input type="checkbox" data-key="c12"> J'ai testé le site sur téléphone et ordinateur.</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Questions fréquentes</div>
+          <h2>Les blocages les plus courants</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Est-ce que j'ai vraiment besoin de Claude Code + Ollama ?</summary>
+            <p>Tu peux utiliser Claude Code seul ou avec Ollama/Kimi en local (gratuit). L'avantage du local est que tout reste sur ta machine. L'avantage du cloud est la puissance et la simplicité : compte environ <span class="hl">20 $/mois</span> pour cette option. Si Kimi n'est pas disponible localement, remplace-le par un modèle compatible avec Ollama comme Llama 3 ou Mistral.</p>
+          </details>
+          <details>
+            <summary>Comment installer Claude Code, Ollama et utiliser Kimi ?</summary>
+            <p><strong>1. Claude Code :</strong> va sur la documentation officielle <a href="https://code.claude.com/docs/en/setup" target="_blank" rel="noopener">https://code.claude.com/docs/en/setup</a>. Sous Windows, ouvre un terminal PowerShell et exécute cette commande :</p>
+            <div class="code">irm https://claude.ai/install.ps1 | iex</div>
+            <p><img src="assets/img67.png" alt="Installation de Claude Code via PowerShell" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+            <p class="small" style="color:var(--gray-mid)">Exemple : installation de Claude Code dans un terminal PowerShell Windows.</p>
+            <p><strong>2. Ajouter Claude Code au PATH :</strong> après l'installation, Windows doit savoir où trouver Claude Code pour que tu puisses le lancer de n'importe quel dossier. Si la commande <code>claude</code> n'est pas reconnue, ajoute son dossier d'installation à la variable d'environnement PATH.</p>
+            <div class="do-list">
+              <div class="do"><div class="check">1</div><div>Ouvre le menu Démarrer et tape <b>variables d'environnement</b>.</div></div>
+              <div class="do"><div class="check">2</div><div>Clique sur <b>Modifier les variables d'environnement système</b>.</div></div>
+              <div class="do"><div class="check">3</div><div>En bas, clique sur <b>Variables d'environnement...</b>.</div></div>
+              <div class="do"><div class="check">4</div><div>Dans la section <b>Variables utilisateur</b>, sélectionne <b>Path</b> puis clique sur <b>Modifier...</b>.</div></div>
+              <div class="do"><div class="check">5</div><div>Clique sur <b>Nouveau</b> et colle le chemin où Claude Code a été installé, par exemple : <code>C:\Users\TON_COMPTE\AppData\Local\AnthropicClaude\bin</code>.</div></div>
+              <div class="do"><div class="check">6</div><div>Valide avec <b>OK</b> sur toutes les fenêtres, puis redémarre PowerShell.</div></div>
+              <div class="do"><div class="check">7</div><div>Vérifie en tapant : <code>claude --version</code>.</div></div>
+            </div>
+            <p><strong>3. Ollama (modèles en local) :</strong> télécharge Ollama depuis <a href="https://ollama.com" target="_blank" rel="noopener">ollama.com</a> et installe-le. Ollama te permet d'exécuter des modèles de langage localement sans envoyer tes données sur le cloud.</p>
+            <p>Après l'installation, vérifie que tout est bien installé en tapant ces deux commandes dans PowerShell :</p>
+            <div class="code">ollama --version
+claude --version</div>
+            <p><img src="assets/img68.png" alt="Vérification des versions d'Ollama et de Claude Code dans PowerShell" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+            <p class="small" style="color:var(--gray-mid)">Si les deux commandes retournent un numéro de version, l'installation est correcte. Sinon, il faut vérifier le PATH ou réinstaller.</p>
+            <p><strong>4. Lancer Claude Code avec Ollama :</strong> une fois Ollama installé, ouvre un terminal PowerShell et lance Claude Code en mode local avec la commande :</p>
+            <div class="code">ollama launch claude</div>
+            <p>Cette commande démarre Claude Code connecté à ton instance Ollama locale.</p>
+            <p><strong>5. Choisir Kimi dans la liste :</strong> après le lancement, une liste de modèles disponibles s'affiche. Utilise les <b>flèches du clavier ↑ ↓</b> pour descendre dans la liste, sélectionne <b>Kimi</b>, puis appuie sur <b>Entrée</b> pour le choisir.</p>
+            <p><img src="assets/img69.png" alt="Sélection de Kimi avec les flèches du clavier dans Claude Code" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
+            <p class="small" style="color:var(--gray-mid)">Important : utilise bien les flèches pour naviguer vers le bas et sélectionner Kimi dans la liste des modèles.</p>
+          </details>
+          <details>
+            <summary>Cloudflare coûte vraiment seulement 10 $ par an ?</summary>
+            <p>Oui, pour un domaine .ca ou .com classique, Cloudflare affiche souvent un prix autour de <span class="hl">10 $ par an</span> (hors taxes selon ta province). Vercel, GitHub et Calendly restent gratuits pour ce niveau d'usage.</p>
+          </details>
+          <details>
+            <summary>Je peux quand même ajouter un formulaire de contact ?</summary>
+            <p>Oui. Le moyen le plus simple sans backend : un lien <code>message</code> qui ouvre directement l'application de messagerie de la visiteuse avec un sujet prédéfini. Exemple : <code>contact@tondomaine.ca?subject=Demande%20de%20contact</code>. Si tu veux un vrai formulaire, tu peux ajouter un service comme Formspree plus tard.</p>
+          </details>
+          <details>
+            <summary>Comment vendre des services en ligne de manière sécurisée ?</summary>
+            <p>La solution la plus simple et sécurisée pour vendre des services est d'utiliser un <strong>Stripe Payment Link</strong>. Tu crées un lien de paiement dans Stripe, puis tu l'imbriques dans un bouton sur ton site. C'est rapide, fiable, et tu n'as pas besoin de coder un système de paiement.</p>
+          </details>
+          <details>
+            <summary>Et si je veux ajouter un blog plus tard ?</summary>
+            <p>Tu peux. Mais commence par une seule page d'accueil. Un blog demande une structure plus complexe. Quand ton site tourne, tu pourras migrer vers un générateur de site statique ou ajouter des pages HTML manuellement.</p>
+          </details>
+          <details>
+            <summary>Combien de temps ça prend vraiment ?</summary>
+            <p>Si tu as déjà ton Business Brain et ton contenu, le site peut être en ligne en une journée. Si tu pars de zéro, compte 2 à 4 heures par jour pendant 3 jours. La partie technique (GitHub + Vercel + Cloudflare) ne prend qu'une heure une fois que tu connais les étapes.</p>
+          </details>
+          <details>
+            <summary>Il est où le code source de mon site web ?</summary>
+            <p>Le code source de ton site est <strong>sur ton ordinateur</strong>, dans le dossier du projet. Claude Code y a déjà accès : c’est pour ça qu’il te demande la permission à chaque fois qu’il veut lire ou modifier un fichier. Tu lui dis <strong>Yes</strong>, et il fait le changement directement sur ta machine. Quand tout est prêt, il pousse aussi les fichiers sur GitHub pour les mettre en ligne.</p>
+            <img src="assets/img35.png" alt="Exemple de demande de permission de Claude Code" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;">
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <h2>Tu en es capable.</h2>
+      <p>À juste suivre les étapes dans l'ordre, une par une.</p>
+      <hr style="border:0;border-top:1px solid rgba(255,255,255,.15);margin:28px 0">
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://wa.me/13673802720?text=Bonjour%20Amal%2C%20j%27ai%20une%20question%20sur%20le%20manuel%20%C2%AB%20De%20l%27id%C3%A9e%20au%20site%20%C2%BB.">M'écrire sur WhatsApp</a>
+        <a class="btn btn-secondary" href="https://amalboukhdhir.ca/business">Découvrir mon site → amalboukhdhir.ca/business</a>
+      </div>
+      <p class="small" style="margin-top:28px; color:#aaa">
+        DE LA PRESSION À LA LIBERTÉ.<br>
+        © Amal Boukhdhir · 2026 · Manuel partagé pour ma communauté.
+      </p>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/13673802720?text=Bonjour%20Amal%2C%20j%27ai%20une%20question%20sur%20le%20manuel%20%C2%AB%20De%20l%27id%C3%A9e%20au%20site%20%C2%BB." aria-label="M'écrire sur WhatsApp"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.04 2C6.58 2 2.18 6.4 2.16 11.86c0 1.92.5 3.8 1.44 5.46L2.3 22l4.92-1.18c1.55.85 3.3 1.29 5.08 1.29h.04c5.46 0 9.86-4.4 9.88-9.86C22.2 6.4 17.8 2 12.34 2h-.3zm6.22 13.86c-.26.73-1.5 1.39-2.1 1.48-.54.08-1.06.12-1.58-.12-.36-.16-.74-.3-1.14-.48-2.1-.88-3.66-2.44-4.56-4.52-.28-.62-.46-1.28-.52-1.96-.04-.52.08-1.02.34-1.48.14-.24.34-.44.6-.58.2-.1.42-.12.62-.04.24.1.44.34.58.6.24.46.44.94.6 1.42.08.22.06.46-.08.64-.08.1-.18.2-.3.26-.1.06-.2.1-.3.14-.1.04-.14.1-.12.22.04.3.18.58.38.82.44.56.98 1.02 1.6 1.36.18.1.36.16.56.2.14.02.24-.02.32-.14.08-.12.16-.26.24-.4.16-.28.4-.36.7-.22.48.22.96.46 1.42.72.22.12.36.3.42.54.06.22.04.44-.04.66z"/></svg></a>
+
+  <div class="site-link-bottom">
+    <a href="https://amalboukhdhir.ca/business" target="_blank" rel="noopener">🌐 amalboukhdhir.ca/business</a>
+  </div>
+
+  <script>
+    const boxes = Array.from(document.querySelectorAll('#checks input[type="checkbox"]'));
+    const fill = document.getElementById('progressFill');
+    const text = document.getElementById('progressText');
+    function loadChecks(){
+      boxes.forEach(b => {
+        const v = localStorage.getItem('siteSansFunnel_' + b.dataset.key);
+        b.checked = v === '1';
+      });
+      updateProgress();
+    }
+    function updateProgress(){
+      const done = boxes.filter(b => b.checked).length;
+      const pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+      fill.style.width = pct + '%';
+      text.textContent = pct + '% terminé · ' + done + ' / ' + boxes.length + ' étapes cochées';
+    }
+    boxes.forEach(b => b.addEventListener('change', () => {
+      localStorage.setItem('siteSansFunnel_' + b.dataset.key, b.checked ? '1' : '0');
+      updateProgress();
+    }));
+    loadChecks();
+
+    // Progression des étapes avec grisage
+    const stepBoxes = Array.from(document.querySelectorAll('.step-check input[type="checkbox"]'));
+    const topFill = document.getElementById('topProgressFill');
+    const topText = document.getElementById('topProgressText');
+    const stepPrefix = 'siteSansFunnel_step_';
+    // Nettoyer les anciennes clés obsolètes si présentes (les étapes 7 à 14 ont changé de sens après renumérotation)
+    for(let i=7; i<=14; i++){ localStorage.removeItem(stepPrefix + i); }
+    function loadStepChecks(){
+      stepBoxes.forEach(b => {
+        const v = localStorage.getItem(stepPrefix + b.dataset.step);
+        b.checked = v === '1';
+        b.closest('article.step').classList.toggle('is-done', b.checked);
+      });
+      updateStepProgress();
+    }
+    function updateStepProgress(){
+      const done = stepBoxes.filter(b => b.checked).length;
+      const total = stepBoxes.length;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      topFill.style.width = pct + '%';
+      topText.textContent = done + ' / ' + total + ' étapes' + (pct === 100 ? ' ✅' : '');
+    }
+    stepBoxes.forEach(b => b.addEventListener('change', () => {
+      localStorage.setItem(stepPrefix + b.dataset.step, b.checked ? '1' : '0');
+      b.closest('article.step').classList.toggle('is-done', b.checked);
+      updateStepProgress();
+    }));
+    loadStepChecks();
+  </script>
+</body>
+</html>

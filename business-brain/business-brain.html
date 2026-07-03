@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Business Brain — Amal Boukhdhir</title>
+
+<style>
+  @font-face { font-family: 'Bebas Neue'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/bebas-neue@latest/latin-400-normal.woff2') format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'Nunito'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/nunito@latest/latin-400-normal.woff2') format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'Nunito'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/nunito@latest/latin-600-normal.woff2') format('woff2'); font-weight: 600; }
+  @font-face { font-family: 'Nunito'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/nunito@latest/latin-700-normal.woff2') format('woff2'); font-weight: 700; }
+  @font-face { font-family: 'Nunito'; src: url('https://cdn.jsdelivr.net/fontsource/fonts/nunito@latest/latin-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; }
+
+  @page {
+    size: A4;
+    margin: 22mm 18mm 22mm 18mm;
+    @bottom-center { content: counter(page) " / " counter(pages); font-family: 'Nunito', sans-serif; font-size: 9pt; color: #888; }
+    @bottom-right { content: "Amal Boukhdhir · Business Brain"; font-family: 'Nunito', sans-serif; font-size: 8pt; color: #aaa; }
+  }
+  @page :first { margin: 0; @bottom-center { content: none; } @bottom-right { content: none; } }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: 'Nunito', sans-serif; font-size: 10.5pt; line-height: 1.55; color: #1A1A1A; background: #FAFAFA; }
+
+  h1, h2, h3, .eyebrow, .display { font-family: 'Bebas Neue', sans-serif; font-weight: 400; color: #1A1A1A; letter-spacing: 1px; margin: 0; }
+  p { margin: 0 0 0.7em 0; }
+  strong { font-weight: 700; }
+  em { font-style: italic; color: #555; }
+  .hl { background: #FFE8A8; padding: 0 3px; border-radius: 2px; }
+
+  /* ============ COVER ============ */
+  .cover { page-break-after: always; height: 297mm; width: 210mm; background: #FAFAFA; padding: 32mm 22mm; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+  .cover-top { display: flex; flex-direction: column; gap: 0; }
+  .cover-eyebrow { font-family: 'Bebas Neue', sans-serif; color: #F26419; font-size: 13pt; letter-spacing: 4px; margin-bottom: 6mm; }
+  .cover-title { font-family: 'Bebas Neue', sans-serif; color: #1A1A1A; font-size: 44pt; line-height: 0.98; letter-spacing: 1.5px; margin-bottom: 8mm; }
+  .cover-title .accent { color: #F26419; }
+  .cover-rule { width: 50mm; height: 4px; background: #F26419; border-radius: 2px; margin-bottom: 8mm; }
+  .cover-sub { font-family: 'Nunito', sans-serif; font-size: 14pt; line-height: 1.4; color: #444; font-style: italic; max-width: 130mm; }
+  .cover-bottom { display: flex; justify-content: space-between; align-items: flex-end; border-top: 0.5px solid #D5D2CC; padding-top: 6mm; }
+  .cover-author { font-family: 'Bebas Neue', sans-serif; font-size: 16pt; letter-spacing: 2px; color: #1A1A1A; }
+  .cover-author .small { font-family: 'Nunito', sans-serif; font-weight: 400; font-size: 9pt; letter-spacing: 0; color: #888; display: block; margin-top: 1mm; }
+  .cover-tag { font-family: 'Bebas Neue', sans-serif; font-size: 11pt; letter-spacing: 2px; color: #F26419; text-align: right; }
+
+  /* ============ INTRO ============ */
+  .intro { page-break-after: always; }
+  .intro h2 { font-size: 26pt; line-height: 1.05; margin-bottom: 4mm; }
+  .intro .lede { font-family: 'Nunito', sans-serif; font-style: italic; color: #666; font-size: 12pt; margin-bottom: 8mm; }
+  .intro .rule-small { width: 30mm; height: 3px; background: #F26419; border-radius: 2px; margin: 6mm 0; }
+  .intro p { margin-bottom: 4mm; }
+
+  /* ============ SECTIONS ============ */
+  .erreur { page-break-before: always; page-break-inside: avoid; }
+  .erreur-header { margin-bottom: 6mm; }
+  .erreur-number { font-family: 'Bebas Neue', sans-serif; color: #F26419; font-size: 12pt; letter-spacing: 3px; }
+  .erreur-title { font-family: 'Bebas Neue', sans-serif; color: #1A1A1A; font-size: 24pt; line-height: 1.05; letter-spacing: 1px; margin: 2mm 0 4mm 0; }
+  .erreur-rule { width: 24mm; height: 3px; background: #F26419; border-radius: 2px; margin-bottom: 6mm; }
+
+  .block { margin-bottom: 5mm; }
+  .block-label { font-family: 'Bebas Neue', sans-serif; font-size: 10pt; letter-spacing: 2px; color: #F26419; margin-bottom: 2mm; }
+
+  .callout { background: #FFFFFF; border-left: 3px solid #F26419; border-radius: 0 6px 6px 0; padding: 4mm 5mm; margin: 4mm 0; page-break-inside: avoid; }
+  .callout .callout-label { font-family: 'Bebas Neue', sans-serif; font-size: 9.5pt; letter-spacing: 2px; color: #F26419; margin-bottom: 2mm; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* ============ FORM COMPONENTS ============ */
+  .write-box { border: 1px solid #D5D2CC; border-radius: 8px; background: #FFFFFF; min-height: 14mm; padding: 3mm 4mm; margin: 0 0 5mm 0; page-break-inside: avoid; }
+  .write-box.tall { min-height: 22mm; }
+  .write-box.short { min-height: 9mm; }
+
+  .field-row { display: flex; gap: 6mm; margin-bottom: 5mm; }
+  .field-row .field { flex: 1; }
+  .field-label { font-family: 'Bebas Neue', sans-serif; font-size: 9pt; letter-spacing: 1.5px; color: #555; margin-bottom: 1.5mm; }
+  .field-line { border: none; border-bottom: 1px solid #D5D2CC; height: 6mm; }
+
+  .worksheet-table { width: 100%; border-collapse: collapse; margin: 3mm 0 5mm 0; background: #FFFFFF; }
+  .worksheet-table th { font-family: 'Bebas Neue', sans-serif; font-size: 9pt; letter-spacing: 1.5px; color: #F26419; text-align: left; padding: 2.5mm 3mm; border-bottom: 1.5px solid #F26419; }
+  .worksheet-table td { border-bottom: 0.5px solid #D5D2CC; padding: 5mm 3mm; vertical-align: top; }
+
+  .swatch-row { display: flex; gap: 5mm; margin: 3mm 0 5mm 0; }
+  .swatch { flex: 1; text-align: center; }
+  .swatch-box { border: 1px solid #D5D2CC; border-radius: 6px; height: 16mm; background: #FFFFFF; margin-bottom: 2mm; }
+  .swatch-label { font-family: 'Bebas Neue', sans-serif; font-size: 7.5pt; letter-spacing: 1px; color: #888; }
+  .swatch-hex { border: none; border-bottom: 1px solid #D5D2CC; height: 5mm; margin-top: 1mm; }
+
+  .numbered-lines { margin: 2mm 0 5mm 0; }
+  .numbered-line { display: flex; align-items: flex-end; gap: 3mm; margin-bottom: 4mm; }
+  .numbered-line .num { font-family: 'Bebas Neue', sans-serif; font-size: 11pt; color: #F26419; flex: none; width: 6mm; }
+  .numbered-line .line { flex: 1; border: none; border-bottom: 1px solid #D5D2CC; height: 6mm; }
+</style>
+</head>
+<body>
+
+<!-- ========================================================== -->
+<!-- COVER -->
+<!-- ========================================================== -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="cover-eyebrow">RÉFÉRENCE PERSONNELLE D'ENTREPRISE</div>
+    <div class="cover-title">BUSINESS <span class="accent">BRAIN</span></div>
+    <div class="cover-rule"></div>
+    <div class="cover-sub">La source unique de vérité pour mon entreprise, ma marque et ma stratégie de croissance — partagée avec mon assistant IA, ma stratège ou mon équipe pour qu'ils aient tout le contexte sur qui je suis, ce que je fais et où je vais.</div>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-author">
+      AMAL BOUKHDHIR
+      <span class="small">Coach en mindset financier</span>
+    </div>
+    <div class="cover-tag">DE LA PRESSION<br>À LA LIBERTÉ</div>
+  </div>
+</div>
+
+<!-- ========================================================== -->
+<!-- INTRO -->
+<!-- ========================================================== -->
+<section class="intro">
+  <h2>COMMENT UTILISER CE DOCUMENT</h2>
+  <p class="lede">Un seul endroit. Chaque réponse. Plus besoin de réexpliquer mon entreprise depuis le début.</p>
+  <div class="rule-small"></div>
+  <p>Ce document est ma source unique de vérité pour mon entreprise, ma marque et ma stratégie de croissance. Je le partage avec mon assistant IA, ma stratège ou mon équipe pour qu'ils aient tout le contexte sur qui je suis, ce que je fais et où je vais — avant même de commencer un contenu, une stratégie ou une construction.</p>
+  <div class="callout">
+    <div class="callout-label">COMMENT LE REMPLIR</div>
+    <p>Des réponses courtes et honnêtes — c'est un brief de travail, pas un texte final poli. Je reviens le mettre à jour dès que quelque chose change : une nouvelle offre, un nouvel objectif, un nouveau chiffre.</p>
+  </div>
+  <p style="margin-top: 6mm;"><strong>Dernière mise à jour :</strong> ____________________</p>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 01 — À PROPOS DE MOI -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 01</div>
+    <div class="erreur-title">À PROPOS DE MOI</div>
+    <div class="erreur-rule"></div>
+  </div>
+
+  <div class="field-row">
+    <div class="field"><div class="field-label">NOM COMPLET</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">ÂGE</div><div class="field-line"></div></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">LIEU DE RÉSIDENCE</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">LANGUES</div><div class="field-line"></div></div>
+  </div>
+  <div class="block">
+    <div class="block-label">PARCOURS / HISTOIRE</div>
+    <div class="write-box tall"></div>
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 02 — MON ENTREPRISE -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 02</div>
+    <div class="erreur-title">MON ENTREPRISE</div>
+    <div class="erreur-rule"></div>
+  </div>
+
+  <div class="field-row">
+    <div class="field"><div class="field-label">NOM DE L'ENTREPRISE</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">SITE WEB</div><div class="field-line"></div></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">TYPE (AGENCE / INDÉPENDANTE / SAAS / COACHING / ETC.)</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">FONDÉE EN</div><div class="field-line"></div></div>
+  </div>
+  <div class="block"><div class="block-label">CE QUE JE FAIS (1-2 PHRASES)</div><div class="write-box"></div></div>
+  <div class="block"><div class="block-label">QUI JE SERS (AUDIENCE CIBLE)</div><div class="write-box"></div></div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">INDUSTRIES / NICHES</div><div class="field-line"></div></div>
+  </div>
+  <div class="block"><div class="block-label">LE PROBLÈME CENTRAL QUE JE RÉSOUS</div><div class="write-box"></div></div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 03 — SERVICES ET OFFRES -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 03</div>
+    <div class="erreur-title">SERVICES ET OFFRES</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <table class="worksheet-table">
+    <thead><tr><th>SERVICE</th><th>DESCRIPTION</th><th>FORMAT DE LIVRAISON</th><th>FOURCHETTE DE PRIX</th></tr></thead>
+    <tbody>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 04 — MARQUE PERSONNELLE -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 04</div>
+    <div class="erreur-title">MARQUE PERSONNELLE</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">IDENTIFIANT(S) DE MARQUE</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">PLATEFORME(S)</div><div class="field-line"></div></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">NOMBRE D'ABONNÉS</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">STYLE DE CONTENU (ÉDUCATIF / COULISSES / DIVERTISSEMENT...)</div><div class="field-line"></div></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">LANGUE(S) DE CONTENU</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">FRÉQUENCE DE PUBLICATION</div><div class="field-line"></div></div>
+  </div>
+  <div class="block"><div class="block-label">TON DE MARQUE (CASUEL, PROFESSIONNEL, TECHNIQUE, DRÔLE...)</div><div class="write-box"></div></div>
+  <div class="block"><div class="block-label">CE QUI ME DIFFÉRENCIE</div><div class="write-box"></div></div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 05 — REVENUS ET MODÈLE D'AFFAIRES -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 05</div>
+    <div class="erreur-title">REVENUS ET<br>MODÈLE D'AFFAIRES</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">REVENU MENSUEL ACTUEL</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">VALEUR MOYENNE PAR CLIENT</div><div class="field-line"></div></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">OBJECTIF DE REVENU (3 MOIS)</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">OBJECTIF DE REVENU (12 MOIS)</div><div class="field-line"></div></div>
+  </div>
+  <div class="block">
+    <div class="block-label">PRINCIPALES SOURCES DE REVENU</div>
+    <div class="numbered-lines">
+      <div class="numbered-line"><div class="num">01</div><div class="line"></div></div>
+      <div class="numbered-line"><div class="num">02</div><div class="line"></div></div>
+      <div class="numbered-line"><div class="num">03</div><div class="line"></div></div>
+    </div>
+  </div>
+  <div class="block"><div class="block-label">CANAUX D'ACQUISITION DE CLIENTS</div><div class="write-box"></div></div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 06 — ÉQUIPE -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 06</div>
+    <div class="erreur-title">ÉQUIPE</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <table class="worksheet-table">
+    <thead><tr><th>RÔLE</th><th>NOM</th><th>RESPONSABILITÉ</th></tr></thead>
+    <tbody>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 07 — OUTILS ET TECHNOLOGIES -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 07</div>
+    <div class="erreur-title">OUTILS ET<br>TECHNOLOGIES</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <table class="worksheet-table">
+    <thead><tr><th>CATÉGORIE</th><th>OUTIL(S)</th></tr></thead>
+    <tbody>
+      <tr><td>Site web / Hébergement</td><td>&nbsp;</td></tr>
+      <tr><td>CRM / Ventes</td><td>&nbsp;</td></tr>
+      <tr><td>Marketing courriel</td><td>&nbsp;</td></tr>
+      <tr><td>Réseaux sociaux</td><td>&nbsp;</td></tr>
+      <tr><td>Design</td><td>&nbsp;</td></tr>
+      <tr><td>Outils IA</td><td>&nbsp;</td></tr>
+      <tr><td>Paiements</td><td>&nbsp;</td></tr>
+      <tr><td>Gestion de projet</td><td>&nbsp;</td></tr>
+      <tr><td>Autre</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 08 — OBJECTIFS ACTUELS -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 08</div>
+    <div class="erreur-title">OBJECTIFS ACTUELS</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <div class="block"><div class="block-label">COURT TERME (30 PROCHAINS JOURS)</div><div class="write-box"></div></div>
+  <div class="block"><div class="block-label">MOYEN TERME (90 PROCHAINS JOURS)</div><div class="write-box"></div></div>
+  <div class="block"><div class="block-label">LONG TERME (12 PROCHAINS MOIS)</div><div class="write-box"></div></div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 09 — FORCES ET DÉFIS -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 09</div>
+    <div class="erreur-title">FORCES ET DÉFIS</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <div class="block"><div class="block-label">FORCES</div><div class="write-box tall"></div></div>
+  <div class="block"><div class="block-label">DÉFIS / POINTS DE BLOCAGE</div><div class="write-box tall"></div></div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 10 — INDICATEURS CLÉS -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 10</div>
+    <div class="erreur-title">INDICATEURS CLÉS<br>QUE JE SUIS</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <table class="worksheet-table">
+    <thead><tr><th>INDICATEUR</th><th>ACTUEL</th><th>CIBLE</th></tr></thead>
+    <tbody>
+      <tr><td>Revenu mensuel</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>Clients / mois</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>Abonnés réseaux sociaux</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>Taux de conversion</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>Temps de réponse moyen</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 11 — PROFIL DU CLIENT IDÉAL -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 11</div>
+    <div class="erreur-title">PROFIL DU<br>CLIENT IDÉAL</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <div class="block"><div class="block-label">QUI EST-IL/ELLE (TITRE, INDUSTRIE, ÉTAPE D'AFFAIRES)</div><div class="write-box"></div></div>
+  <div class="block"><div class="block-label">OÙ SE TROUVE-T-IL/ELLE (PAYS, VILLE, PLATEFORMES EN LIGNE)</div><div class="write-box"></div></div>
+  <div class="block"><div class="block-label">AVEC QUOI IL/ELLE LUTTE</div><div class="write-box"></div></div>
+  <div class="block"><div class="block-label">CE QU'IL/ELLE VEUT</div><div class="write-box"></div></div>
+  <div class="field-row">
+    <div class="field"><div class="field-label">FOURCHETTE DE BUDGET</div><div class="field-line"></div></div>
+    <div class="field"><div class="field-label">COMMENT IL/ELLE ME TROUVE</div><div class="field-line"></div></div>
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 12 — CONCURRENTS / INSPIRATIONS -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 12</div>
+    <div class="erreur-title">CONCURRENTS /<br>INSPIRATIONS</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <table class="worksheet-table">
+    <thead><tr><th>NOM</th><th>CE QU'ILS FONT BIEN</th><th>CE QUE JE FAIS MIEUX</th></tr></thead>
+    <tbody>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 13 — ACTIFS DE MARQUE -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 13</div>
+    <div class="erreur-title">ACTIFS DE MARQUE</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <table class="worksheet-table">
+    <thead><tr><th>ACTIF</th><th>LIEN / EMPLACEMENT</th></tr></thead>
+    <tbody>
+      <tr><td>Logo</td><td>&nbsp;</td></tr>
+      <tr><td>Couleurs de marque</td><td>&nbsp;</td></tr>
+      <tr><td>Guide de marque</td><td>&nbsp;</td></tr>
+      <tr><td>Portfolio</td><td>&nbsp;</td></tr>
+      <tr><td>Témoignages</td><td>&nbsp;</td></tr>
+      <tr><td>Trousse média</td><td>&nbsp;</td></tr>
+    </tbody>
+  </table>
+
+  <div class="block" style="margin-top: 6mm;">
+    <div class="block-label">COULEURS DE MARQUE (SI NON LIÉES CI-DESSUS)</div>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-box"></div><div class="swatch-label">PRINCIPALE</div><div class="swatch-hex"></div></div>
+      <div class="swatch"><div class="swatch-box"></div><div class="swatch-label">SECONDAIRE</div><div class="swatch-hex"></div></div>
+      <div class="swatch"><div class="swatch-box"></div><div class="swatch-label">ACCENT</div><div class="swatch-hex"></div></div>
+      <div class="swatch"><div class="swatch-box"></div><div class="swatch-label">FOND</div><div class="swatch-hex"></div></div>
+      <div class="swatch"><div class="swatch-box"></div><div class="swatch-label">TEXTE</div><div class="swatch-hex"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SECTION 14 — NOTES ET IDÉES -->
+<!-- ========================================================== -->
+<section class="erreur">
+  <div class="erreur-header">
+    <div class="erreur-number">SECTION 14</div>
+    <div class="erreur-title">NOTES ET IDÉES</div>
+    <div class="erreur-rule"></div>
+  </div>
+  <p>Projets à venir, partenariats, idées de contenu, expérimentations, leçons apprises.</p>
+  <div class="write-box tall"></div>
+  <div class="write-box tall"></div>
+
+  <div class="callout" style="margin-top: 8mm;">
+    <div class="callout-label">GARDE-LE À JOUR</div>
+    <p>Mets à jour ce document dès que quelque chose de significatif change — une nouvelle offre, un nouveau chiffre, un nouvel objectif. <span class="hl">Il n'est utile que s'il est vrai aujourd'hui.</span></p>
+  </div>
+</section>
+
+</body>
+</html>
