@@ -975,16 +975,11 @@ https://www.tondomaine.ca</div>
             <div class="code">irm https://claude.ai/install.ps1 | iex</div>
             <p><img src="assets/img67.png" alt="Installation de Claude Code via PowerShell" style="margin-top:12px; width:100%; max-width:720px; border-radius:10px; border:1px solid #E5E0D8;"></p>
             <p class="small" style="color:var(--gray-mid)">Exemple : installation de Claude Code dans un terminal PowerShell Windows.</p>
-            <p><strong>2. Ajouter Claude Code au PATH :</strong> après l'installation, Windows doit savoir où trouver Claude Code pour que tu puisses le lancer de n'importe quel dossier. Si la commande <code>claude</code> n'est pas reconnue, ajoute son dossier d'installation à la variable d'environnement PATH.</p>
-            <div class="do-list">
-              <div class="do"><div class="check">1</div><div>Ouvre le menu Démarrer et tape <b>variables d'environnement</b>.</div></div>
-              <div class="do"><div class="check">2</div><div>Clique sur <b>Modifier les variables d'environnement système</b>.</div></div>
-              <div class="do"><div class="check">3</div><div>En bas, clique sur <b>Variables d'environnement...</b>.</div></div>
-              <div class="do"><div class="check">4</div><div>Dans la section <b>Variables utilisateur</b>, sélectionne <b>Path</b> puis clique sur <b>Modifier...</b>.</div></div>
-              <div class="do"><div class="check">5</div><div>Clique sur <b>Nouveau</b> et colle le chemin où Claude Code a été installé, par exemple : <code>C:\Users\TON_COMPTE\AppData\Local\AnthropicClaude\bin</code>.</div></div>
-              <div class="do"><div class="check">6</div><div>Valide avec <b>OK</b> sur toutes les fenêtres, puis redémarre PowerShell.</div></div>
-              <div class="do"><div class="check">7</div><div>Vérifie en tapant : <code>claude --version</code>.</div></div>
-            </div>
+            <p><strong>2. Ajouter Claude Code au PATH :</strong> ouvre PowerShell et colle ces deux commandes :</p>
+            <div class="code">[Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$env:USERPROFILE\.local\bin", [EnvironmentVariableTarget]::User)
+$env:PATH = "$env:PATH;$env:USERPROFILE\.local\bin"</div>
+            <p>Ensuite, ferme PowerShell, rouvre-le et tape :</p>
+            <div class="code">claude --version</div>
             <p><strong>3. Ollama (modèles en local) :</strong> télécharge Ollama depuis <a href="https://ollama.com" target="_blank" rel="noopener">ollama.com</a> et installe-le. Ollama te permet d'exécuter des modèles de langage localement sans envoyer tes données sur le cloud.</p>
             <p>Après l'installation, vérifie que tout est bien installé en tapant ces deux commandes dans PowerShell :</p>
             <div class="code">ollama --version
