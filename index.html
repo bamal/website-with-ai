@@ -663,17 +663,41 @@ Fais-le comme un designer web graphiste senior, de manière professionnelle."
               </div>
               <div class="code">Prompt type à donner dans Claude Code :
 
-"Utilise les documents suivants sur mon ordinateur :
-1. Business Brain : C:/Users/boukh_2njb9wx/OneDrive/Documents/Claude/Projects/CLAUDE/coaching/active/website-sans-funnel/business-brain/business-brain.pdf
-2. Identité visuelle : [colle ici le chemin ou le contenu du fichier identité-visuelle.txt]
+"Crée un site web professionnel avec Next.js (la technologie JavaScript la plus récente basée sur React), inspiré de cette page : https://amalboukhdhir.ca/business.
 
-Crée un site web avec la technologie JavaScript la plus récente. Base-toi sur le Business Brain (couleur de marque, services, cliente idéale, voix, parcours) et sur l'identité visuelle définie (logo, favicon, polices, couleurs).
+Utilise les documents suivants sur mon ordinateur :
+1. Mon Business Brain : C:/Users/boukh_2njb9wx/OneDrive/Documents/Claude/Projects/CLAUDE/coaching/active/website-sans-funnel/business-brain/business-brain.pdf
+2. Mon identité visuelle : [colle ici le chemin ou le contenu du fichier identite-visuelle.txt]
 
-Intègre mon WhatsApp Business, mon lien de réservation de rendez-vous via Calendly, et mon lien de paiement Stripe pour un de mes services.
+Objectif : une vitrine claire, mobile-first, qui convertit une visiteuse en contact.
 
-Génère une page web complète, mobile-first, avec le design system de mon identité visuelle.
-Sections : hero, qui j'aide, ma méthode, 1 à 3 services, bio, témoignage ou résultat, FAQ, contact.
-Pas de framework externe. Un seul fichier autonome et simple. Fais-le comme un designer web graphiste senior, de manière professionnelle."
+Structure exacte à reproduire :
+- Section hero avec mon message principal, ma promesse et un appel à l'action
+- Section "À qui je m'adresse / le problème que je résous"
+- Section "Ma méthode" ou "Mon approche"
+- 1 à 3 cartes de services cliquables
+- Bio courte avec photo et crédibilité
+- Témoignage ou résultat (même simple)
+- FAQ avec maximum 5 questions
+- Section contact avec WhatsApp, Calendly et un lien de paiement Stripe
+- Footer avec lien vers mon site principal
+
+Exigences techniques :
+- Projet Next.js 14/15 avec App Router
+- Une seule page principale + layout global
+- Pas de backend externe
+- Design responsive, mobile-first
+- Typographie et couleurs de mon identité visuelle
+- SEO de base (title, meta description)
+- Boutons WhatsApp cliquables, lien Calendly, lien de paiement Stripe
+- Prêt pour le déploiement sur Vercel
+
+Après création :
+1. Crée un repo GitHub nommé [NOM_DU_SITE]
+2. Configure le projet pour Vercel
+3. Donne-moi les commandes exactes pour installer, lancer en local et déployer
+
+Fais-le comme un designer web graphiste senior, professionnel, sobre et efficace."
 
 > <b>Astuce :</b> si Claude Code a du mal à lire le PDF, donne-lui plutôt le chemin du fichier <code>business-brain.html</code>, qui est du texte lisible. Pour l'identité visuelle, un fichier <code>identite-visuelle.txt</code> ou un message dans le chat suffit.</div>
               <div class="ok"><div>💡</div><div><b>Astuce :</b> copie le lien de cette page (<a href="https://amalboukhdhir.ca/business" target="_blank" rel="noopener"><code>https://amalboukhdhir.ca/business</code></a>), donne-le à Claude Code et demande-lui de reproduire exactement cette structure et cette façon de faire. Une fois que ça fonctionne pour toi, tu pourras passer à des choses plus complexes.</div></div>

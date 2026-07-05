@@ -663,17 +663,41 @@ Do it like a senior graphic web designer, in a professional way."
               </div>
               <div class="code">Sample prompt to give in Claude Code:
 
-"Use the following documents on my computer:
-1. Business Brain: C:/Users/boukh_2njb9wx/OneDrive/Documents/Claude/Projects/CLAUDE/coaching/active/website-sans-funnel/business-brain/business-brain.pdf
-2. Visual identity: [paste here the path or content of the identite-visuelle.txt file]
+"Create a professional website with Next.js (the latest JavaScript technology based on React), inspired by this page: https://amalboukhdhir.ca/business.
 
-Create a website with the latest JavaScript technology. Base it on the Business Brain (brand color, services, ideal client, voice, journey) and on the defined visual identity (logo, favicon, fonts, colors).
+Use the following documents on my computer:
+1. My Business Brain: C:/Users/boukh_2njb9wx/OneDrive/Documents/Claude/Projects/CLAUDE/coaching/active/website-sans-funnel/business-brain/business-brain.pdf
+2. My visual identity: [paste here the path or content of the identite-visuelle.txt file]
 
-Integrate my WhatsApp Business, my appointment booking link via Calendly, and my Stripe payment link for one of my services.
+Goal: a clear, mobile-first showcase that converts a visitor into a contact.
 
-Generate a complete, mobile-first webpage with my visual identity's design system.
-Sections: hero, who I help, my method, 1 to 3 services, bio, testimonial or result, FAQ, contact.
-No external framework. A single self-contained simple file. Do it like a senior graphic web designer, in a professional way."
+Exact structure to reproduce:
+- Hero section with my main message, my promise and a call to action
+- Section "Who I address / the problem I solve"
+- Section "My method" or "My approach"
+- 1 to 3 clickable service cards
+- Short bio with photo and credibility
+- Testimonial or result (even simple)
+- FAQ with maximum 5 questions
+- Contact section with WhatsApp, Calendly and a Stripe payment link
+- Footer with link to my main website
+
+Technical requirements:
+- Next.js 14/15 project with App Router
+- Single main page + global layout
+- No external backend
+- Responsive, mobile-first design
+- Typography and colors from my visual identity
+- Basic SEO (title, meta description)
+- Clickable WhatsApp buttons, Calendly link, Stripe payment link
+- Ready for deployment on Vercel
+
+After creation:
+1. Create a GitHub repo named [SITE_NAME]
+2. Configure the project for Vercel
+3. Give me the exact commands to install, run locally and deploy
+
+Do it like a senior web graphic designer, professional, sober and effective."
 
 &gt; <b>Tip:</b> if Claude Code has trouble reading the PDF, give it the path to the <code>business-brain.html</code> file, which is readable text. For the visual identity, a <code>identite-visuelle.txt</code> file or a message in the chat is enough.</div>
               <div class="ok"><div>💡</div><div><b>Tip:</b> copy the link to this page (<a href="https://amalboukhdhir.ca/business" target="_blank" rel="noopener"><code>https://amalboukhdhir.ca/business</code></a>), give it to Claude Code and ask it to reproduce exactly this structure and approach. Once it works for you, you can move on to more complex things.</div></div>
